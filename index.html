@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherNow — City Weather Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>WeatherNow</h1>
+      <p class="subtitle">City Weather &amp; 7-Day Forecast</p>
+    </header>
+
+    <section class="search-section" aria-label="City Search">
+      <form id="search-form" class="search-form">
+        <label for="city-input" class="search-label">Search City</label>
+        <div class="search-controls">
+          <input
+            type="text"
+            id="city-input"
+            name="city"
+            placeholder="Enter city name (e.g., Berhampur, Pune)"
+          />
+          <button type="submit" id="search-btn" class="btn-primary">Search</button>
+        </div>
+      </form>
+    </section>
+
+    <main>
+      <section class="current-weather" aria-label="Current Weather">
+        <div class="current-header">
+          <div>
+            <h2 id="current-city" class="current-city">Berhampur</h2>
+            <p id="current-condition" class="current-condition">Partly Cloudy</p>
+          </div>
+          <span id="current-emoji" class="weather-emoji" aria-hidden="true">⛅</span>
+        </div>
+
+        <div class="current-main">
+          <p id="current-temp" class="current-temp">29°C</p>
+          <div class="current-metrics">
+            <div class="metric-item">
+              <span class="metric-label">Humidity</span>
+              <span id="current-humidity" class="metric-value">68%</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Wind Speed</span>
+              <span id="current-wind" class="metric-value">14 km/h</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="forecast-section" aria-label="7-Day Forecast">
+        <h2 class="section-heading">7-Day Forecast</h2>
+        <div id="forecast-row" class="forecast-row">
+          <article class="forecast-card">
+            <p class="forecast-day">Thu</p>
+            <span class="forecast-emoji" aria-hidden="true">☀️</span>
+            <p class="forecast-condition">Sunny</p>
+            <p class="forecast-temps">31° / 22°</p>
+          </article>
+          <article class="forecast-card">
+            <p class="forecast-day">Fri</p>
+            <span class="forecast-emoji" aria-hidden="true">⛅</span>
+            <p class="forecast-condition">Partly Cloudy</p>
+            <p class="forecast-temps">30° / 21°</p>
+          </article>
+          <article class="forecast-card">
+            <p class="forecast-day">Sat</p>
+            <span class="forecast-emoji" aria-hidden="true">🌧️</span>
+            <p class="forecast-condition">Rain</p>
+            <p class="forecast-temps">27° / 20°</p>
+          </article>
+          <article class="forecast-card">
+            <p class="forecast-day">Sun</p>
+            <span class="forecast-emoji" aria-hidden="true">☁️</span>
+            <p class="forecast-condition">Cloudy</p>
+            <p class="forecast-temps">28° / 21°</p>
+          </article>
+          <article class="forecast-card">
+            <p class="forecast-day">Mon</p>
+            <span class="forecast-emoji" aria-hidden="true">☀️</span>
+            <p class="forecast-condition">Sunny</p>
+            <p class="forecast-temps">32° / 23°</p>
+          </article>
+          <article class="forecast-card">
+            <p class="forecast-day">Tue</p>
+            <span class="forecast-emoji" aria-hidden="true">☀️</span>
+            <p class="forecast-condition">Clear</p>
+            <p class="forecast-temps">33° / 23°</p>
+          </article>
+          <article class="forecast-card">
+            <p class="forecast-day">Wed</p>
+            <span class="forecast-emoji" aria-hidden="true">🌦️</span>
+            <p class="forecast-condition">Showers</p>
+            <p class="forecast-temps">29° / 22°</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

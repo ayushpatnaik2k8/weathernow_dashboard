@@ -3,103 +3,150 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WeatherNow — City Weather Dashboard</title>
+  <title>WeatherNow — Weather Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="app-container">
-    <header class="app-header">
-      <h1>WeatherNow</h1>
-      <p class="subtitle">City Weather &amp; 7-Day Forecast</p>
-    </header>
+<body class="theme-cloudy">
+  <!-- Background Drifting Clouds & Transparent Bubbles -->
+  <div class="sky-layer" aria-hidden="true">
+    <div class="cloud-puff c1"></div>
+    <div class="cloud-puff c2"></div>
+    <div class="cloud-puff c3"></div>
+    <span class="glass-orb o1"></span>
+    <span class="glass-orb o2"></span>
+    <span class="glass-orb o3"></span>
+    <span class="glass-orb o4"></span>
+  </div>
 
-    <section class="search-section" aria-label="City Search">
-      <form id="search-form" class="search-form">
-        <label for="city-input" class="search-label">Search City</label>
-        <div class="search-controls">
-          <input
-            type="text"
-            id="city-input"
-            name="city"
-            placeholder="Enter city name (e.g., Berhampur, Pune)"
-          />
-          <button type="submit" id="search-btn" class="btn-primary">Search</button>
+  <div class="dashboard-shell">
+    <!-- Left Clickable Navigation Rail -->
+    <aside class="side-rail" aria-label="Dashboard Navigation">
+      <div class="brand-mark">
+        <span class="brand-badge">WN</span>
+        <span class="brand-name">WeatherNow</span>
+      </div>
+
+      <nav class="side-nav" role="tablist" aria-label="Weather Views">
+        <button type="button" class="nav-bubble active" data-view="overview">Overview</button>
+        <button type="button" class="nav-bubble" data-view="forecast">7-Day Forecast</button>
+        <button type="button" class="nav-bubble" data-view="details">Weather Details</button>
+      </nav>
+
+      <div class="pinned-city-bubble">
+        <span class="pinned-label">SAVED CITY</span>
+        <div id="rail-city" class="pinned-city">Berhampur</div>
+        <div class="pinned-temp-row">
+          <span id="rail-temp" class="pinned-temp">22°C</span>
+          <span id="rail-emoji" class="pinned-emoji" aria-hidden="true">☁️</span>
         </div>
-      </form>
-    </section>
+        <div id="rail-range" class="pinned-sub">H 24°C · L 20°C</div>
+      </div>
+    </aside>
 
-    <main>
-      <section class="current-weather" aria-label="Current Weather">
-        <div class="current-header">
-          <div>
-            <h2 id="current-city" class="current-city">Berhampur</h2>
-            <p id="current-condition" class="current-condition">Partly Cloudy</p>
+    <!-- Main Content Stage -->
+    <main class="main-stage">
+      <header class="top-bar">
+        <div class="greeting-block">
+          <h1 id="time-greeting">Good afternoon</h1>
+          <p class="subtitle">Real-time weather &amp; 7-day forecast</p>
+        </div>
+        <button type="button" id="unit-toggle" aria-label="Toggle temperature unit">°C / °F</button>
+      </header>
+
+      <!-- Search Bubble Bar -->
+      <section class="search-section" aria-label="City Search">
+        <form id="search-form" class="search-form">
+          <div class="search-controls">
+            <input
+              type="text"
+              id="city-input"
+              name="city"
+              placeholder="Search any city (e.g., Berhampur, Pune, London)"
+            />
+            <button type="submit" id="search-btn">Search</button>
           </div>
-          <span id="current-emoji" class="weather-emoji" aria-hidden="true">⛅</span>
-        </div>
-
-        <div class="current-main">
-          <p id="current-temp" class="current-temp">29°C</p>
-          <div class="current-metrics">
-            <div class="metric-item">
-              <span class="metric-label">Humidity</span>
-              <span id="current-humidity" class="metric-value">68%</span>
-            </div>
-            <div class="metric-item">
-              <span class="metric-label">Wind Speed</span>
-              <span id="current-wind" class="metric-value">14 km/h</span>
-            </div>
-          </div>
-        </div>
+          <p id="error-msg" class="error-msg" role="alert"></p>
+        </form>
       </section>
 
-      <section class="forecast-section" aria-label="7-Day Forecast">
-        <h2 class="section-heading">7-Day Forecast</h2>
-        <div id="forecast-row" class="forecast-row">
-          <article class="forecast-card">
-            <p class="forecast-day">Thu</p>
-            <span class="forecast-emoji" aria-hidden="true">☀️</span>
-            <p class="forecast-condition">Sunny</p>
-            <p class="forecast-temps">31° / 22°</p>
-          </article>
-          <article class="forecast-card">
-            <p class="forecast-day">Fri</p>
-            <span class="forecast-emoji" aria-hidden="true">⛅</span>
-            <p class="forecast-condition">Partly Cloudy</p>
-            <p class="forecast-temps">30° / 21°</p>
-          </article>
-          <article class="forecast-card">
-            <p class="forecast-day">Sat</p>
-            <span class="forecast-emoji" aria-hidden="true">🌧️</span>
-            <p class="forecast-condition">Rain</p>
-            <p class="forecast-temps">27° / 20°</p>
-          </article>
-          <article class="forecast-card">
-            <p class="forecast-day">Sun</p>
-            <span class="forecast-emoji" aria-hidden="true">☁️</span>
-            <p class="forecast-condition">Cloudy</p>
-            <p class="forecast-temps">28° / 21°</p>
-          </article>
-          <article class="forecast-card">
-            <p class="forecast-day">Mon</p>
-            <span class="forecast-emoji" aria-hidden="true">☀️</span>
-            <p class="forecast-condition">Sunny</p>
-            <p class="forecast-temps">32° / 23°</p>
-          </article>
-          <article class="forecast-card">
-            <p class="forecast-day">Tue</p>
-            <span class="forecast-emoji" aria-hidden="true">☀️</span>
-            <p class="forecast-condition">Clear</p>
-            <p class="forecast-temps">33° / 23°</p>
-          </article>
-          <article class="forecast-card">
-            <p class="forecast-day">Wed</p>
-            <span class="forecast-emoji" aria-hidden="true">🌦️</span>
-            <p class="forecast-condition">Showers</p>
-            <p class="forecast-temps">29° / 22°</p>
-          </article>
-        </div>
-      </section>
+      <!-- VIEW 1: Overview -->
+      <div id="view-overview" class="view-panel active">
+        <section id="current-weather" class="hero-bubble-card" aria-label="Current Weather">
+          <div class="hero-top">
+            <div>
+              <span class="hero-kicker">LIVE OVERVIEW</span>
+              <h2 id="current-city" class="current-city">Berhampur, India</h2>
+              <p id="current-condition" class="current-condition">Overcast / Mist</p>
+            </div>
+            <span id="current-emoji" class="current-emoji" aria-hidden="true">☁️</span>
+          </div>
+
+          <div class="hero-bottom">
+            <div id="current-temp" class="current-temp">22°C</div>
+            <div class="current-metrics">
+              <div class="metric-bubble">
+                <span class="metric-label">HUMIDITY</span>
+                <span id="current-humidity" class="metric-value">87%</span>
+              </div>
+              <div class="metric-bubble">
+                <span class="metric-label">WIND SPEED</span>
+                <span id="current-wind" class="metric-value">17 km/h</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="forecast-section" aria-label="7-Day Forecast">
+          <h2>7-Day Forecast</h2>
+          <div id="forecast-grid" class="forecast-grid"></div>
+        </section>
+      </div>
+
+      <!-- VIEW 2: Dedicated 7-Day Forecast View -->
+      <div id="view-forecast" class="view-panel" hidden>
+        <section class="forecast-section" aria-label="Full 7-Day Outlook">
+          <div class="panel-header-row">
+            <h2>Extended 7-Day Outlook</h2>
+            <span id="forecast-city-badge" class="pill-badge">Berhampur</span>
+          </div>
+          <div id="forecast-grid-full" class="forecast-grid forecast-grid-expanded"></div>
+        </section>
+      </div>
+
+      <!-- VIEW 3: Dedicated Weather Details View -->
+      <div id="view-details" class="view-panel" hidden>
+        <section class="details-section" aria-label="Detailed Atmosphere Metrics">
+          <div class="panel-header-row">
+            <h2>Atmospheric Details</h2>
+            <span id="details-city-badge" class="pill-badge">Berhampur</span>
+          </div>
+          <div class="details-grid">
+            <div class="detail-bubble-card">
+              <span class="metric-label">TEMPERATURE</span>
+              <span id="detail-temp" class="detail-big">22°C</span>
+              <span id="detail-feels" class="detail-sub">Current live reading</span>
+            </div>
+            <div class="detail-bubble-card">
+              <span class="metric-label">HUMIDITY</span>
+              <span id="detail-humidity" class="detail-big">87%</span>
+              <span class="detail-sub">Relative moisture level</span>
+            </div>
+            <div class="detail-bubble-card">
+              <span class="metric-label">WIND SPEED</span>
+              <span id="detail-wind" class="detail-big">17 km/h</span>
+              <span class="detail-sub">Surface breeze speed</span>
+            </div>
+            <div class="detail-bubble-card">
+              <span class="metric-label">CONDITION</span>
+              <span id="detail-condition" class="detail-big">Overcast</span>
+              <span id="detail-range" class="detail-sub">Today's high / low</span>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
   </div>
 

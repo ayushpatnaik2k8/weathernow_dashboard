@@ -210,6 +210,7 @@ body.theme-storm .drizzle-layer {
 
 .side-rail,
 .search-section,
+.met-alert-banner,
 .hero-bubble-card,
 .hourly-section,
 .forecast-section,
@@ -217,7 +218,10 @@ body.theme-storm .drizzle-layer {
 .forecast-card,
 .hourly-card,
 .detail-bubble-card,
-.pinned-city-bubble {
+.pinned-city-bubble,
+.atmo-line-card,
+.atmo-sun-card,
+.activity-card {
   background: rgba(255, 255, 255, 0.34);
   backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
@@ -230,31 +234,129 @@ body.theme-storm .drizzle-layer {
   transition: transform 0.25s ease, box-shadow 0.3s ease, background 0.45s ease, border-color 0.45s ease;
 }
 
+/* Meteorological Color-Coded Alert Banner (IMD & Foreign Met Departments) */
+.met-alert-banner {
+  padding: 15px 22px;
+  border-radius: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.alert-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.alert-color-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: "Outfit", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+}
+
+.alert-authority {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.alert-message {
+  font-size: 0.84rem;
+  opacity: 0.88;
+  margin-top: 2px;
+}
+
+.alert-level-tag {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.05em;
+}
+
+.met-alert-banner.alert-green {
+  background: rgba(34, 197, 94, 0.22);
+  border-color: rgba(134, 239, 172, 0.9);
+}
+.met-alert-banner.alert-green .alert-color-pill {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.met-alert-banner.alert-yellow {
+  background: rgba(234, 179, 8, 0.26);
+  border-color: rgba(253, 224, 71, 0.95);
+}
+.met-alert-banner.alert-yellow .alert-color-pill {
+  background: #eab308;
+  color: #1e293b;
+}
+
+.met-alert-banner.alert-orange {
+  background: rgba(249, 115, 22, 0.28);
+  border-color: rgba(253, 186, 116, 0.95);
+}
+.met-alert-banner.alert-orange .alert-color-pill {
+  background: #ea580c;
+  color: #ffffff;
+}
+
+.met-alert-banner.alert-red {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: rgba(252, 165, 165, 0.95);
+}
+.met-alert-banner.alert-red .alert-color-pill {
+  background: #dc2626;
+  color: #ffffff;
+}
+
 /* Left Sidebar & VAYTHER Brand Header */
 .side-rail {
   position: sticky;
   top: 28px;
-  padding: 22px 18px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 16px;
 }
 
 .brand-mark {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-bottom: 6px;
+  padding-bottom: 4px;
 }
 
-.brand-logo-img {
+.brand-logo-wrap {
+  position: relative;
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.18);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.22);
+}
+
+.brand-logo-svg,
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .brand-text-group {
@@ -282,16 +384,16 @@ body.theme-storm .drizzle-layer {
 .side-nav {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 8px;
 }
 
 .nav-bubble {
   width: 100%;
   text-align: left;
   border-radius: 999px;
-  padding: 12px 18px;
+  padding: 10px 18px;
   font-family: "Inter", sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   color: inherit;
@@ -368,7 +470,7 @@ body.theme-storm .drizzle-layer {
 .main-stage {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .top-bar {
@@ -634,6 +736,7 @@ body.theme-storm .drizzle-layer {
 .metric-label {
   font-size: 0.68rem;
   letter-spacing: 0.08em;
+  font-weight: 700;
   opacity: 0.72;
 }
 
@@ -825,6 +928,7 @@ body.theme-storm .drizzle-layer {
   font-weight: 700;
 }
 
+/* Weather Details Grid */
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -846,13 +950,311 @@ body.theme-storm .drizzle-layer {
 
 .detail-sub {
   font-size: 0.82rem;
+  opacity: 0.78;
+}
+
+/* =========================================================
+   Atmosphere (Airflow Compass, AQI, Visibility, UV, Pressure)
+   ========================================================= */
+.atmo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.atmo-line-card {
+  padding: 20px 24px;
+  border-radius: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.atmo-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.atmo-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.atmo-big {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.atmo-status-pill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: "Outfit", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.compass-dial-box {
+  flex-shrink: 0;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  display: grid;
+  place-items: center;
+}
+
+.compass-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.compass-cardinal {
+  font-family: "Outfit", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  fill: currentColor;
+  opacity: 0.85;
+}
+
+#airflow-compass-needle {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.atmo-aqi-right {
+  flex-shrink: 0;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aqi-bar-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e 0%, #84cc16 30%, #eab308 55%, #f97316 78%, #ef4444 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+.aqi-bar-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #0f172a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: left 0.4s ease;
+}
+
+.atmo-aqi-pills {
+  display: flex;
+  gap: 10px;
+}
+
+.pollutant-chip {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pollutant-chip span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  opacity: 0.72;
+}
+
+.pollutant-chip strong {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.98rem;
+  margin-top: 2px;
+}
+
+.atmo-visual-box {
+  flex-shrink: 0;
+  width: 124px;
+  height: 66px;
+  display: grid;
+  place-items: center;
+}
+
+.atmo-mini-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.atmo-uv-gauge-wrap {
+  flex-shrink: 0;
+  width: 210px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.uv-bar-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e 0%, #eab308 35%, #f97316 65%, #ef4444 85%, #a855f7 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+.uv-bar-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #0f172a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: left 0.4s ease;
+}
+
+.uv-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 600;
   opacity: 0.75;
+}
+
+/* =========================================================
+   Sun rise & Sun set + Moon rise & Moon Set Views
+   ========================================================= */
+.atmo-sun-card {
+  padding: 24px 26px;
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sun-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sun-arc-stage {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.sun-arc-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sun-times-footer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.sun-time-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sun-time-center {
+  text-align: center;
+}
+
+.sun-time-right {
+  text-align: right;
+}
+
+.sun-time-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  opacity: 0.72;
+}
+
+.sun-time-val {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.sun-time-sub {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+/* =========================================================
+   Activities View (6 Cards Grid)
+   ========================================================= */
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.activity-card {
+  padding: 22px 18px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 7px;
+}
+
+.activity-card:hover {
+  transform: translateY(-3px);
+}
+
+.activity-icon {
+  font-size: 1.75rem;
+}
+
+.activity-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.activity-rating {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.activity-note {
+  font-size: 0.78rem;
+  opacity: 0.76;
 }
 
 /* =========================================================
    Weather-Reactive Bubble Themes
    ========================================================= */
-/* 1. Sunny / Clear */
 body.theme-clear {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 45%, #fed7aa 100%);
   color: #2b1912;
@@ -870,7 +1272,6 @@ body.theme-clear #geo-btn {
   border-bottom-color: rgba(154, 52, 18, 0.35);
 }
 
-/* 2. Cloudy */
 body.theme-cloudy {
   background: linear-gradient(135deg, #dcfce7 0%, #ccfbf1 48%, #bae6fd 100%);
   color: #112a2e;
@@ -888,7 +1289,6 @@ body.theme-cloudy #geo-btn {
   border-bottom-color: rgba(17, 94, 89, 0.35);
 }
 
-/* 3. Foggy */
 body.theme-fog {
   background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
   color: #1e293b;
@@ -906,13 +1306,13 @@ body.theme-fog #geo-btn {
   border-bottom-color: rgba(51, 65, 85, 0.35);
 }
 
-/* 4. Rainy / Drizzle */
 body.theme-rain {
   background: linear-gradient(145deg, #061826 0%, #0b2d42 52%, #115e59 100%);
   color: #ecfeff;
 }
 body.theme-rain .side-rail,
 body.theme-rain .search-section,
+body.theme-rain .met-alert-banner,
 body.theme-rain .hero-bubble-card,
 body.theme-rain .hourly-section,
 body.theme-rain .forecast-section,
@@ -921,7 +1321,12 @@ body.theme-rain .hourly-card,
 body.theme-rain .forecast-card,
 body.theme-rain .detail-bubble-card,
 body.theme-rain .metric-bubble,
-body.theme-rain .pinned-city-bubble {
+body.theme-rain .pinned-city-bubble,
+body.theme-rain .atmo-line-card,
+body.theme-rain .atmo-sun-card,
+body.theme-rain .activity-card,
+body.theme-rain .pollutant-chip,
+body.theme-rain .compass-dial-box {
   background: rgba(255, 255, 255, 0.15);
   border: 1.5px solid rgba(255, 255, 255, 0.5);
   border-bottom: 3px solid rgba(0, 0, 0, 0.35);
@@ -929,6 +1334,10 @@ body.theme-rain .pinned-city-bubble {
     inset 0 1.5px 2px rgba(255, 255, 255, 0.35),
     0 10px 24px rgba(0, 0, 0, 0.25);
   color: #ecfeff;
+}
+body.theme-rain .atmo-status-pill {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(165, 243, 252, 0.55);
 }
 body.theme-rain .forecast-card.selected-day,
 body.theme-rain .day-tab-btn.active {
@@ -980,13 +1389,13 @@ body.theme-rain .suggestion-tag {
   background: rgba(255, 255, 255, 0.16);
 }
 
-/* 5. Storm */
 body.theme-storm {
   background: linear-gradient(145deg, #120824 0%, #2a104a 52%, #581c87 100%);
   color: #faf5ff;
 }
 body.theme-storm .side-rail,
 body.theme-storm .search-section,
+body.theme-storm .met-alert-banner,
 body.theme-storm .hero-bubble-card,
 body.theme-storm .hourly-section,
 body.theme-storm .forecast-section,
@@ -995,7 +1404,12 @@ body.theme-storm .hourly-card,
 body.theme-storm .forecast-card,
 body.theme-storm .detail-bubble-card,
 body.theme-storm .metric-bubble,
-body.theme-storm .pinned-city-bubble {
+body.theme-storm .pinned-city-bubble,
+body.theme-storm .atmo-line-card,
+body.theme-storm .atmo-sun-card,
+body.theme-storm .activity-card,
+body.theme-storm .pollutant-chip,
+body.theme-storm .compass-dial-box {
   background: rgba(255, 255, 255, 0.15);
   border: 1.5px solid rgba(255, 255, 255, 0.5);
   border-bottom: 3px solid rgba(0, 0, 0, 0.35);
@@ -1003,6 +1417,10 @@ body.theme-storm .pinned-city-bubble {
     inset 0 1.5px 2px rgba(255, 255, 255, 0.35),
     0 10px 24px rgba(0, 0, 0, 0.25);
   color: #faf5ff;
+}
+body.theme-storm .atmo-status-pill {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(233, 213, 255, 0.55);
 }
 body.theme-storm .forecast-card.selected-day,
 body.theme-storm .day-tab-btn.active {
@@ -1054,7 +1472,6 @@ body.theme-storm .suggestion-tag {
   background: rgba(255, 255, 255, 0.16);
 }
 
-/* 6. Snow */
 body.theme-snow {
   background: linear-gradient(135deg, #f1f5f9 0%, #e0e7ff 50%, #bae6fd 100%);
   color: #1e293b;
@@ -1103,10 +1520,19 @@ body.theme-snow #geo-btn {
   }
   .hourly-strip,
   .hourly-grid-full,
-  .forecast-grid {
+  .forecast-grid,
+  .activities-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .details-grid {
     grid-template-columns: 1fr;
+  }
+  .atmo-line-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .atmo-uv-gauge-wrap,
+  .atmo-aqi-right {
+    width: 100%;
   }
 }

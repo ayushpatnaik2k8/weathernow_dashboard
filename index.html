@@ -29,21 +29,44 @@
     <!-- Left Clickable Navigation Rail -->
     <aside class="side-rail" aria-label="Dashboard Navigation">
       <div class="brand-mark">
-        <img
-          src="./vayther-logo.png"
-          alt="VAYTHER Logo"
-          class="brand-logo-img"
-          data-fallback-step="0"
-          onerror="
-            if (this.dataset.fallbackStep === '0') {
-              this.dataset.fallbackStep = '1';
-              this.src = 'vayther-logo.png';
-            } else {
-              this.onerror = null;
-              this.src = 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%230b2d42%22 stroke=%22%2338bdf8%22 stroke-width=%226%22/><circle cx=%2238%22 cy=%2238%22 r=%2214%22 fill=%22%23facc15%22/><path d=%22M32 62h38a12 12 0 0 0 0-24 16 16 0 0 0-31-4A11 11 0 0 0 32 62z%22 fill=%22%23e0f2fe%22/></svg>';
-            }
-          "
-        />
+        <div class="brand-logo-wrap" title="VAYTHER — Weather, Ahead of Time">
+          <svg class="brand-logo-svg" viewBox="0 0 120 120" width="54" height="54" aria-label="VAYTHER Logo">
+            <defs>
+              <radialGradient id="vaytherBg" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#154c8c" />
+                <stop offset="70%" stop-color="#071936" />
+                <stop offset="100%" stop-color="#030914" />
+              </radialGradient>
+              <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fef08a" />
+                <stop offset="55%" stop-color="#f59e0b" />
+                <stop offset="100%" stop-color="#ea580c" />
+              </linearGradient>
+              <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="65%" stop-color="#93c5fd" />
+                <stop offset="100%" stop-color="#2563eb" />
+              </linearGradient>
+              <linearGradient id="cyanArc" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="100%" stop-color="#a5f3fc" />
+              </linearGradient>
+            </defs>
+            <circle cx="60" cy="60" r="56" fill="url(#vaytherBg)" stroke="#38bdf8" stroke-width="4" />
+            <circle cx="44" cy="40" r="16" fill="url(#sunGrad)" />
+            <path d="M36 68h48a14 14 0 0 0 1-28 20 20 0 0 0-38-5A13 13 0 0 0 36 68z" fill="url(#cloudGrad)" />
+            <path d="M26 74c24 4 54-6 66-26" fill="none" stroke="url(#cyanArc)" stroke-width="4.5" stroke-linecap="round" />
+            <path d="M46 75c-3 5-3 8 0 10 3-2 3-5 0-10zm13 0c-3 5-3 8 0 10 3-2 3-5 0-10zm13 0c-3 5-3 8 0 10 3-2 3-5 0-10z" fill="#38bdf8" />
+            <text x="60" y="99" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="800" font-size="14" letter-spacing="1.4">VAYTHER</text>
+          </svg>
+          <img
+            src="./vayther-logo.png"
+            alt="VAYTHER Logo"
+            class="brand-logo-img"
+            onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';"
+            onerror="this.style.display='none';"
+          />
+        </div>
         <div class="brand-text-group">
           <span class="brand-name">VAYTHER</span>
           <span class="brand-tagline">Weather, Ahead of Time</span>
@@ -55,10 +78,14 @@
         <button type="button" class="nav-bubble" data-view="forecast">7-Day Forecast</button>
         <button type="button" class="nav-bubble" data-view="hourly">Hourly Forecast</button>
         <button type="button" class="nav-bubble" data-view="details">Weather Details</button>
+        <button type="button" class="nav-bubble" data-view="atmosphere">Atmosphere</button>
+        <button type="button" class="nav-bubble" data-view="sun">Sun rise &amp; Sun set</button>
+        <button type="button" class="nav-bubble" data-view="moon">Moon rise &amp; Moon Set</button>
+        <button type="button" class="nav-bubble" data-view="activities">Activities</button>
       </nav>
 
       <div class="pinned-city-bubble">
-        <span class="pinned-label">SAVED LOCATION</span>
+        <span class="pinned-label">SEARCHED LOCATION</span>
         <div id="rail-city" class="pinned-city">Sitalapalli</div>
         <div class="pinned-temp-row">
           <span id="rail-temp" class="pinned-temp">22°C</span>
@@ -102,7 +129,19 @@
         </form>
       </section>
 
-      <!-- VIEW 1: Overview (All Weather Forecast Combined) -->
+      <!-- Meteorological Alert Banner (IMD for India, National Met Dept for Foreign) -->
+      <section id="met-alert-banner" class="met-alert-banner alert-green" aria-live="polite">
+        <div class="alert-left">
+          <span id="alert-badge" class="alert-color-pill">GREEN ALERT</span>
+          <div>
+            <div id="alert-authority" class="alert-authority">Indian Meteorological Department (IMD)</div>
+            <p id="alert-message" class="alert-message">Green — No Warning: Weather conditions are normal with no severe advisory.</p>
+          </div>
+        </div>
+        <span id="alert-level-code" class="alert-level-tag">NORMAL</span>
+      </section>
+
+      <!-- VIEW 1: Overview -->
       <div id="view-overview" class="view-panel active">
         <section id="current-weather" class="hero-bubble-card" aria-label="Current Weather">
           <div class="hero-top">
@@ -124,6 +163,10 @@
               <div class="metric-bubble">
                 <span class="metric-label">WIND SPEED</span>
                 <span id="current-wind" class="metric-value">17 km/h</span>
+              </div>
+              <div class="metric-bubble">
+                <span class="metric-label">WIND DIRECTION</span>
+                <span id="current-wind-dir" class="metric-value">NE (45°)</span>
               </div>
               <div class="metric-bubble">
                 <span class="metric-label">SUNRISE</span>
@@ -194,18 +237,308 @@
             <div class="detail-bubble-card">
               <span class="metric-label">HUMIDITY &amp; PRECIPITATION</span>
               <span id="detail-humidity" class="detail-big">87%</span>
-              <span id="detail-precip" class="detail-sub">Precipitation chance: 10%</span>
+              <span id="detail-precip" class="detail-sub">Precipitation probability: 10%</span>
             </div>
             <div class="detail-bubble-card">
-              <span class="metric-label">WIND &amp; PRESSURE</span>
-              <span id="detail-wind" class="detail-big">17 km/h</span>
-              <span id="detail-pressure" class="detail-sub">Surface pressure: 1012 hPa</span>
+              <span class="metric-label">WIND SPEED &amp; DIRECTION</span>
+              <span id="detail-wind" class="detail-big">NE · 17 km/h</span>
+              <span id="detail-wind-dir" class="detail-sub">Direction: Northeast (45°)</span>
             </div>
             <div class="detail-bubble-card">
               <span class="metric-label">SUNRISE &amp; SUNSET</span>
               <span id="detail-sun" class="detail-big">06:04 AM / 05:14 PM</span>
               <span id="detail-range" class="detail-sub">High 24°C / Low 20°C</span>
             </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- VIEW 5: Atmosphere (AQI, Airflow Compass, Visibility, UV, Air Pressure) -->
+      <div id="view-atmosphere" class="view-panel" hidden>
+        <section class="details-section" aria-label="Atmosphere Metrics">
+          <div class="panel-header-row">
+            <h2>Atmosphere</h2>
+            <span id="atmo-city-badge" class="pill-badge">Sitalapalli, Ganjam, Odisha</span>
+          </div>
+
+          <div class="atmo-stack">
+            <!-- Airflow Direction with Compass Card -->
+            <article class="atmo-line-card">
+              <div class="atmo-card-left">
+                <span class="metric-label">AIRFLOW DIRECTION</span>
+                <div class="atmo-value-row">
+                  <span id="atmo-airflow-val" class="atmo-big">NE (45°)</span>
+                  <span id="atmo-airflow-speed" class="atmo-status-pill">17 km/h</span>
+                </div>
+                <p id="atmo-airflow-desc" class="detail-sub">Airflow moving from Northeast · Steady local breeze.</p>
+              </div>
+              <div class="compass-dial-box" aria-label="Airflow Compass">
+                <svg viewBox="0 0 110 110" class="compass-svg">
+                  <circle cx="55" cy="55" r="47" fill="none" stroke="currentColor" stroke-width="2" opacity="0.35" />
+                  <circle cx="55" cy="55" r="34" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" opacity="0.25" />
+                  <text x="55" y="17" text-anchor="middle" class="compass-cardinal">N</text>
+                  <text x="95" y="59" text-anchor="middle" class="compass-cardinal">E</text>
+                  <text x="55" y="101" text-anchor="middle" class="compass-cardinal">S</text>
+                  <text x="15" y="59" text-anchor="middle" class="compass-cardinal">W</text>
+                  <g id="airflow-compass-needle" transform="translate(55,55) rotate(45)">
+                    <line x1="0" y1="22" x2="0" y2="-24" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round" />
+                    <polygon points="0,-30 -6,-18 6,-18" fill="#ef4444" />
+                    <circle cx="0" cy="0" r="4.5" fill="#ffffff" stroke="#0f172a" stroke-width="2" />
+                  </g>
+                </svg>
+              </div>
+            </article>
+
+            <!-- AQI Card with Gauge & Pollutant Breakdown -->
+            <article class="atmo-line-card aqi-hero-card">
+              <div class="atmo-card-left">
+                <span class="metric-label">AIR QUALITY INDEX (AQI)</span>
+                <div class="atmo-value-row">
+                  <span id="atmo-aqi-val" class="atmo-big">38</span>
+                  <span id="atmo-aqi-status" class="atmo-status-pill">Good</span>
+                </div>
+                <p id="atmo-aqi-desc" class="detail-sub">Good air quality · Clean ambient airflow</p>
+              </div>
+              <div class="atmo-aqi-right">
+                <div class="aqi-bar-track">
+                  <div id="atmo-aqi-marker" class="aqi-bar-marker" style="left: 20%;"></div>
+                </div>
+                <div class="atmo-aqi-pills" aria-label="Pollutant breakdown">
+                  <div class="pollutant-chip">
+                    <span>PM2.5</span>
+                    <strong id="atmo-pm25">11.2</strong>
+                  </div>
+                  <div class="pollutant-chip">
+                    <span>PM10</span>
+                    <strong id="atmo-pm10">22.4</strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Visibility Card -->
+            <article class="atmo-line-card">
+              <div class="atmo-card-left">
+                <span class="metric-label">VISIBILITY</span>
+                <div class="atmo-value-row">
+                  <span id="atmo-visibility-val" class="atmo-big">16.1 km</span>
+                  <span id="atmo-visibility-status" class="atmo-status-pill">Good</span>
+                </div>
+                <p id="atmo-visibility-desc" class="detail-sub">Clear horizontal sightline across open roads and surroundings.</p>
+              </div>
+              <div class="atmo-visual-box" aria-hidden="true">
+                <svg viewBox="0 0 120 64" class="atmo-mini-svg">
+                  <polygon points="60,54 14,14 106,14" fill="currentColor" opacity="0.16" />
+                  <path d="M22 22 Q60 8 98 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="4 4" opacity="0.55" />
+                  <path d="M34 34 Q60 22 86 34" fill="none" stroke="currentColor" stroke-width="2.5" opacity="0.75" />
+                  <circle cx="60" cy="50" r="6" fill="currentColor" />
+                </svg>
+              </div>
+            </article>
+
+            <!-- UV Index Card -->
+            <article class="atmo-line-card">
+              <div class="atmo-card-left">
+                <span class="metric-label">UV INDEX</span>
+                <div class="atmo-value-row">
+                  <span id="atmo-uv-val" class="atmo-big">4</span>
+                  <span id="atmo-uv-status" class="atmo-status-pill">Moderate</span>
+                </div>
+                <p id="atmo-uv-desc" class="detail-sub">Moderate solar UV radiation — sunglasses recommended midday.</p>
+              </div>
+              <div class="atmo-uv-gauge-wrap">
+                <div class="uv-bar-track">
+                  <div id="atmo-uv-marker" class="uv-bar-marker" style="left: 35%;"></div>
+                </div>
+                <div class="uv-scale-labels">
+                  <span>0 Low</span>
+                  <span>5 Mod</span>
+                  <span>8 High</span>
+                  <span>11+</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Air Pressure Card -->
+            <article class="atmo-line-card">
+              <div class="atmo-card-left">
+                <span class="metric-label">AIR PRESSURE</span>
+                <div class="atmo-value-row">
+                  <span id="atmo-pressure-val" class="atmo-big">1013 hPa</span>
+                  <span id="atmo-pressure-trend" class="atmo-status-pill">Steady</span>
+                </div>
+                <p id="atmo-pressure-desc" class="detail-sub">Standard atmospheric sea-level barometric pressure.</p>
+              </div>
+              <div class="atmo-visual-box" aria-hidden="true">
+                <svg viewBox="0 0 130 68" class="atmo-mini-svg">
+                  <path d="M20 56 A 46 46 0 0 1 110 56" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="3 5" opacity="0.35" />
+                  <path d="M20 56 A 46 46 0 0 1 78 13" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity="0.85" />
+                  <circle cx="78" cy="13" r="5" fill="currentColor" />
+                </svg>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- VIEW 6: Sun rise & Sun set -->
+      <div id="view-sun" class="view-panel" hidden>
+        <section class="details-section" aria-label="Sunrise and Sunset Solar Path">
+          <div class="panel-header-row">
+            <h2>Sun rise &amp; Sun set</h2>
+            <span id="sun-city-badge" class="pill-badge">Sitalapalli, Ganjam, Odisha</span>
+          </div>
+
+          <article class="atmo-sun-card">
+            <div class="sun-card-header">
+              <span class="metric-label">SOLAR ARC &amp; DAYLIGHT</span>
+              <span id="atmo-daylight-badge" class="atmo-status-pill">Daylight Path</span>
+            </div>
+
+            <div class="sun-arc-stage">
+              <svg viewBox="0 0 420 150" class="sun-arc-svg" role="img" aria-label="Graphical Sunrise and Sunset Arc">
+                <defs>
+                  <linearGradient id="sunPathGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#64748b" stop-opacity="0.4" />
+                    <stop offset="25%" stop-color="#facc15" stop-opacity="0.95" />
+                    <stop offset="75%" stop-color="#f59e0b" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#64748b" stop-opacity="0.4" />
+                  </linearGradient>
+                </defs>
+                <line x1="16" y1="112" x2="404" y2="112" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.3" />
+                <path d="M 20 132 C 95 132, 135 26, 210 26 C 285 26, 325 132, 400 132" fill="none" stroke="currentColor" stroke-width="4" opacity="0.22" stroke-linecap="round" />
+                <path d="M 75 112 C 122 65, 158 26, 210 26 C 262 26, 298 65, 345 112" fill="none" stroke="url(#sunPathGlow)" stroke-width="4.5" stroke-linecap="round" />
+                <circle cx="75" cy="112" r="4.5" fill="#facc15" />
+                <circle cx="345" cy="112" r="4.5" fill="#fb923c" />
+                <g id="sun-live-marker" transform="translate(260, 44)">
+                  <circle cx="0" cy="0" r="14" fill="#facc15" opacity="0.28" />
+                  <circle cx="0" cy="0" r="7.5" fill="#fde047" stroke="#ffffff" stroke-width="2" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="sun-times-footer">
+              <div class="sun-time-col">
+                <span class="sun-time-label">Sunrise</span>
+                <span id="atmo-sunrise-time" class="sun-time-val">06:04 AM</span>
+              </div>
+              <div class="sun-time-col sun-time-center">
+                <span class="sun-time-label">Solar Status</span>
+                <span id="atmo-solar-status" class="sun-time-sub">Daylight Active</span>
+              </div>
+              <div class="sun-time-col sun-time-right">
+                <span class="sun-time-label">Sunset</span>
+                <span id="atmo-sunset-time" class="sun-time-val">05:14 PM</span>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <!-- VIEW 7: Moon rise & Moon Set (Dedicated Button & View with Graph) -->
+      <div id="view-moon" class="view-panel" hidden>
+        <section class="details-section" aria-label="Moonrise and Moonset Lunar Path">
+          <div class="panel-header-row">
+            <h2>Moon rise &amp; Moon Set</h2>
+            <span id="moon-city-badge" class="pill-badge">Sitalapalli, Ganjam, Odisha</span>
+          </div>
+
+          <article class="atmo-sun-card">
+            <div class="sun-card-header">
+              <span id="moon-phase-label" class="metric-label">LUNAR ARC · WAXING GIBBOUS</span>
+              <span id="moon-cycle-badge" class="atmo-status-pill">Lunar Cycle</span>
+            </div>
+
+            <div class="sun-arc-stage">
+              <svg viewBox="0 0 420 150" class="sun-arc-svg" role="img" aria-label="Graphical Moonrise and Moonset Arc">
+                <defs>
+                  <linearGradient id="moonPathGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#64748b" stop-opacity="0.35" />
+                    <stop offset="30%" stop-color="#38bdf8" stop-opacity="0.9" />
+                    <stop offset="70%" stop-color="#c4b5fd" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#64748b" stop-opacity="0.35" />
+                  </linearGradient>
+                </defs>
+                <line x1="16" y1="112" x2="404" y2="112" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.3" />
+                <path d="M 20 132 C 95 132, 135 26, 210 26 C 285 26, 325 132, 400 132" fill="none" stroke="currentColor" stroke-width="4" opacity="0.22" stroke-linecap="round" />
+                <path d="M 75 112 C 122 65, 158 26, 210 26 C 262 26, 298 65, 345 112" fill="none" stroke="url(#moonPathGlow)" stroke-width="4.5" stroke-linecap="round" />
+                <circle cx="75" cy="112" r="4.5" fill="#38bdf8" />
+                <circle cx="345" cy="112" r="4.5" fill="#c4b5fd" />
+                <g id="moon-live-marker" transform="translate(160, 46)">
+                  <circle cx="0" cy="0" r="14" fill="#bae6fd" opacity="0.28" />
+                  <circle cx="0" cy="0" r="7.5" fill="#f8fafc" stroke="#38bdf8" stroke-width="2" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="sun-times-footer">
+              <div class="sun-time-col">
+                <span class="sun-time-label">Moonrise</span>
+                <span id="moon-rise-time" class="sun-time-val">07:12 PM</span>
+              </div>
+              <div class="sun-time-col sun-time-center">
+                <span class="sun-time-label">Lunar Status</span>
+                <span id="moon-status-text" class="sun-time-sub">Tracking Lunar Path</span>
+              </div>
+              <div class="sun-time-col sun-time-right">
+                <span class="sun-time-label">Moonset</span>
+                <span id="moon-set-time" class="sun-time-val">06:45 AM</span>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <!-- VIEW 8: Activities -->
+      <div id="view-activities" class="view-panel" hidden>
+        <section class="details-section" aria-label="Outdoor Activities Suitability">
+          <div class="panel-header-row">
+            <h2>Activities</h2>
+            <span id="activities-city-badge" class="pill-badge">Sitalapalli, Ganjam, Odisha</span>
+          </div>
+
+          <div class="activities-grid">
+            <article class="activity-card">
+              <span class="activity-icon" aria-hidden="true">🚴</span>
+              <span class="activity-title">Outdoor activities</span>
+              <span id="act-outdoor-rating" class="activity-rating">Good</span>
+              <span id="act-outdoor-note" class="activity-note">Comfortable air &amp; wind</span>
+            </article>
+
+            <article class="activity-card">
+              <span class="activity-icon" aria-hidden="true">🛰️</span>
+              <span class="activity-title">Stargazing</span>
+              <span id="act-stargazing-rating" class="activity-rating">Fair</span>
+              <span id="act-stargazing-note" class="activity-note">Check sky clarity at night</span>
+            </article>
+
+            <article class="activity-card">
+              <span class="activity-icon" aria-hidden="true">🎣</span>
+              <span class="activity-title">Fishing</span>
+              <span id="act-fishing-rating" class="activity-rating">Good</span>
+              <span id="act-fishing-note" class="activity-note">Steady water &amp; wind</span>
+            </article>
+
+            <article class="activity-card">
+              <span class="activity-icon" aria-hidden="true">⛵</span>
+              <span class="activity-title">Sailing</span>
+              <span id="act-sailing-rating" class="activity-rating">Good</span>
+              <span id="act-sailing-note" class="activity-note">Favorable breeze &amp; visibility</span>
+            </article>
+
+            <article class="activity-card">
+              <span class="activity-icon" aria-hidden="true">💊</span>
+              <span class="activity-title">Cold</span>
+              <span id="act-cold-rating" class="activity-rating">Low risk</span>
+              <span id="act-cold-note" class="activity-note">Mild ambient temperature</span>
+            </article>
+
+            <article class="activity-card">
+              <span class="activity-icon" aria-hidden="true">🦟</span>
+              <span class="activity-title">Mosquito activity</span>
+              <span id="act-mosquito-rating" class="activity-rating">Moderate</span>
+              <span id="act-mosquito-note" class="activity-note">Evening humidity &amp; calm air</span>
+            </article>
           </div>
         </section>
       </div>

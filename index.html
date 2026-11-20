@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WeatherNow — Weather Dashboard</title>
+  <title>VAYTHER — Weather, Ahead of Time</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="theme-cloudy">
-  <!-- Background Drifting Clouds & Transparent Bubbles -->
+  <!-- Dynamic Weather Background Layer -->
   <div class="sky-layer" aria-hidden="true">
+    <div class="sun-orb"></div>
     <div class="cloud-puff c1"></div>
     <div class="cloud-puff c2"></div>
     <div class="cloud-puff c3"></div>
+    <div class="fog-band f1"></div>
+    <div class="fog-band f2"></div>
+    <div class="drizzle-layer" id="drizzle-layer"></div>
     <span class="glass-orb o1"></span>
     <span class="glass-orb o2"></span>
     <span class="glass-orb o3"></span>
@@ -25,19 +29,37 @@
     <!-- Left Clickable Navigation Rail -->
     <aside class="side-rail" aria-label="Dashboard Navigation">
       <div class="brand-mark">
-        <span class="brand-badge">WN</span>
-        <span class="brand-name">WeatherNow</span>
+        <img
+          src="./vayther-logo.png"
+          alt="VAYTHER Logo"
+          class="brand-logo-img"
+          data-fallback-step="0"
+          onerror="
+            if (this.dataset.fallbackStep === '0') {
+              this.dataset.fallbackStep = '1';
+              this.src = 'vayther-logo.png';
+            } else {
+              this.onerror = null;
+              this.src = 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%230b2d42%22 stroke=%22%2338bdf8%22 stroke-width=%226%22/><circle cx=%2238%22 cy=%2238%22 r=%2214%22 fill=%22%23facc15%22/><path d=%22M32 62h38a12 12 0 0 0 0-24 16 16 0 0 0-31-4A11 11 0 0 0 32 62z%22 fill=%22%23e0f2fe%22/></svg>';
+            }
+          "
+        />
+        <div class="brand-text-group">
+          <span class="brand-name">VAYTHER</span>
+          <span class="brand-tagline">Weather, Ahead of Time</span>
+        </div>
       </div>
 
       <nav class="side-nav" role="tablist" aria-label="Weather Views">
         <button type="button" class="nav-bubble active" data-view="overview">Overview</button>
         <button type="button" class="nav-bubble" data-view="forecast">7-Day Forecast</button>
+        <button type="button" class="nav-bubble" data-view="hourly">Hourly Forecast</button>
         <button type="button" class="nav-bubble" data-view="details">Weather Details</button>
       </nav>
 
       <div class="pinned-city-bubble">
-        <span class="pinned-label">SAVED CITY</span>
-        <div id="rail-city" class="pinned-city">Berhampur</div>
+        <span class="pinned-label">SAVED LOCATION</span>
+        <div id="rail-city" class="pinned-city">Sitalapalli</div>
         <div class="pinned-temp-row">
           <span id="rail-temp" class="pinned-temp">22°C</span>
           <span id="rail-emoji" class="pinned-emoji" aria-hidden="true">☁️</span>
@@ -50,38 +72,46 @@
     <main class="main-stage">
       <header class="top-bar">
         <div class="greeting-block">
-          <h1 id="time-greeting">Good afternoon</h1>
-          <p class="subtitle">Real-time weather &amp; 7-day forecast</p>
+          <h1 id="time-greeting">Good morning</h1>
+          <p class="subtitle">Real-time weather, hourly outlook &amp; 7-day forecast</p>
         </div>
-        <button type="button" id="unit-toggle" aria-label="Toggle temperature unit">°C / °F</button>
+        <div class="top-actions">
+          <button type="button" id="geo-btn" aria-label="Use my current location">📍 Use My Location</button>
+          <button type="button" id="unit-toggle" aria-label="Toggle temperature unit">°C / °F</button>
+        </div>
       </header>
 
-      <!-- Search Bubble Bar -->
-      <section class="search-section" aria-label="City Search">
-        <form id="search-form" class="search-form">
-          <div class="search-controls">
-            <input
-              type="text"
-              id="city-input"
-              name="city"
-              placeholder="Search any city (e.g., Berhampur, Pune, London)"
-            />
-            <button type="submit" id="search-btn">Search</button>
+      <!-- Search Bubble Bar with Live Suggestions -->
+      <section class="search-section" aria-label="Location Search">
+        <form id="search-form" class="search-form" autocomplete="off">
+          <div class="search-wrapper">
+            <div class="search-controls">
+              <input
+                type="text"
+                id="city-input"
+                name="city"
+                placeholder="Type village or city name (even partial spelling)..."
+                aria-autocomplete="list"
+                aria-controls="suggestions-list"
+              />
+              <button type="submit" id="search-btn">Search</button>
+            </div>
+            <ul id="suggestions-list" class="suggestions-list" role="listbox" hidden></ul>
           </div>
           <p id="error-msg" class="error-msg" role="alert"></p>
         </form>
       </section>
 
-      <!-- VIEW 1: Overview -->
+      <!-- VIEW 1: Overview (All Weather Forecast Combined) -->
       <div id="view-overview" class="view-panel active">
         <section id="current-weather" class="hero-bubble-card" aria-label="Current Weather">
           <div class="hero-top">
             <div>
               <span class="hero-kicker">LIVE OVERVIEW</span>
-              <h2 id="current-city" class="current-city">Berhampur, India</h2>
-              <p id="current-condition" class="current-condition">Overcast / Mist</p>
+              <h2 id="current-city" class="current-city">Sitalapalli, Ganjam, Odisha</h2>
+              <p id="current-condition" class="current-condition">Partly Cloudy</p>
             </div>
-            <span id="current-emoji" class="current-emoji" aria-hidden="true">☁️</span>
+            <span id="current-emoji" class="current-emoji" aria-hidden="true">⛅</span>
           </div>
 
           <div class="hero-bottom">
@@ -95,54 +125,86 @@
                 <span class="metric-label">WIND SPEED</span>
                 <span id="current-wind" class="metric-value">17 km/h</span>
               </div>
+              <div class="metric-bubble">
+                <span class="metric-label">SUNRISE</span>
+                <span id="current-sunrise" class="metric-value">06:04 AM</span>
+              </div>
+              <div class="metric-bubble">
+                <span class="metric-label">SUNSET</span>
+                <span id="current-sunset" class="metric-value">05:14 PM</span>
+              </div>
             </div>
           </div>
         </section>
 
+        <!-- Hourly Forecast Above 7-Day Forecast -->
+        <section class="hourly-section" aria-label="Hourly Forecast">
+          <div class="panel-header-row">
+            <h2 id="overview-hourly-title">Hourly Forecast — Today</h2>
+            <button type="button" id="open-full-hourly-btn" class="pill-badge clickable-pill">See all 24 hrs →</button>
+          </div>
+          <div id="hourly-strip" class="hourly-strip"></div>
+        </section>
+
         <section class="forecast-section" aria-label="7-Day Forecast">
-          <h2>7-Day Forecast</h2>
+          <div class="panel-header-row">
+            <h2>7-Day Forecast</h2>
+            <span class="hint-text">Tap any day for 24-hr forecast</span>
+          </div>
           <div id="forecast-grid" class="forecast-grid"></div>
         </section>
       </div>
 
-      <!-- VIEW 2: Dedicated 7-Day Forecast View -->
+      <!-- VIEW 2: 7-Day Forecast -->
       <div id="view-forecast" class="view-panel" hidden>
         <section class="forecast-section" aria-label="Full 7-Day Outlook">
           <div class="panel-header-row">
-            <h2>Extended 7-Day Outlook</h2>
-            <span id="forecast-city-badge" class="pill-badge">Berhampur</span>
+            <h2>Extended 7-Day Forecast (Tap a day for 24-hr outlook)</h2>
+            <span id="forecast-city-badge" class="pill-badge">Sitalapalli, Ganjam, Odisha</span>
           </div>
           <div id="forecast-grid-full" class="forecast-grid forecast-grid-expanded"></div>
         </section>
       </div>
 
-      <!-- VIEW 3: Dedicated Weather Details View -->
+      <!-- VIEW 3: 24-Hour Forecast for Selected Day -->
+      <div id="view-hourly" class="view-panel" hidden>
+        <section class="hourly-section" aria-label="Extended Hourly Outlook">
+          <div class="panel-header-row">
+            <h2 id="full-hourly-title">24-Hour Forecast — Today</h2>
+            <span id="hourly-city-badge" class="pill-badge">Sitalapalli, Ganjam, Odisha</span>
+          </div>
+          <div id="hourly-day-tabs" class="hourly-day-tabs" role="tablist" aria-label="Select Day for 24-Hour Forecast"></div>
+          <div id="hourly-grid-full" class="hourly-grid-full"></div>
+        </section>
+      </div>
+
+      <!-- VIEW 4: Weather Details -->
       <div id="view-details" class="view-panel" hidden>
         <section class="details-section" aria-label="Detailed Atmosphere Metrics">
           <div class="panel-header-row">
-            <h2>Atmospheric Details</h2>
-            <span id="details-city-badge" class="pill-badge">Berhampur</span>
+            <h2>Weather Details</h2>
+            <span id="details-city-badge" class="pill-badge">Sitalapalli, Ganjam, Odisha</span>
           </div>
           <div class="details-grid">
             <div class="detail-bubble-card">
-              <span class="metric-label">TEMPERATURE</span>
+              <span class="metric-label">TEMPERATURE &amp; FEELS LIKE</span>
               <span id="detail-temp" class="detail-big">22°C</span>
-              <span id="detail-feels" class="detail-sub">Current live reading</span>
+              <span id="detail-feels" class="detail-sub">Feels like 22°C</span>
             </div>
             <div class="detail-bubble-card">
-              <span class="metric-label">HUMIDITY</span>
+              <span class="metric-label">HUMIDITY &amp; PRECIPITATION</span>
               <span id="detail-humidity" class="detail-big">87%</span>
-              <span class="detail-sub">Relative moisture level</span>
+              <span id="detail-precip" class="detail-sub">Precipitation chance: 10%</span>
             </div>
             <div class="detail-bubble-card">
-              <span class="metric-label">WIND SPEED</span>
+              <span class="metric-label">WIND &amp; PRESSURE</span>
               <span id="detail-wind" class="detail-big">17 km/h</span>
-              <span class="detail-sub">Surface breeze speed</span>
+              <span id="detail-pressure" class="detail-sub">Surface pressure: 1012 hPa</span>
             </div>
             <div class="detail-bubble-card">
-              <span class="metric-label">CONDITION</span>
-              <span id="detail-condition" class="detail-big">Overcast</span>
-              <span id="detail-range" class="detail-sub">Today's high / low</span>
+              <span class="metric-label">SUNRISE &amp; SUNSET</span>
+              <span id="detail-sun" class="detail-big">06:04 AM / 05:14 PM</span>
+              <span id="detail-range" class="detail-sub">High 24°C / Low 20°C</span>
             </div>
           </div>
         </section>
